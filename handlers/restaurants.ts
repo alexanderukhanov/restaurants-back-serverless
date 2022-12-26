@@ -167,10 +167,10 @@ export const deleteRestaurant: APIGatewayProxyHandler = async (event) => {
 }
 
 export const getRestaurants: APIGatewayProxyHandler = async (event) => {
-    const {sequelizeDB, Restaurant, Dish} = await loadSequelize();
+    const {sequelizeDB, Dish} = await loadSequelize();
 
     try {
-        const userId: number = event.requestContext.authorizer?.lambda.userId;
+        const userId: number = event.requestContext.authorizer?.lambda.userId || 0;
         const restaurants: Array<RestaurantInstance & {isLiked: number}> = await sequelizeDB.query(`
              select r.*, if (ul.restaurantId is not null, 1, 0) as isLiked
              from Restaurants r 

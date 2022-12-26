@@ -94,8 +94,6 @@ functions:
       - httpApi:
           path: /api/restaurants/all
           method: get
-          authorizer:
-            name: customJWTAuthorizer
   updateDish:
     handler: ./handlers/dishes.updateDish
     events:
