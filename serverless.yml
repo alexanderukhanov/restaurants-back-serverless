@@ -1,0 +1,130 @@
+org: ukhanov
+app: restaurants-back-serverless
+service: restaurants-back-serverless
+frameworkVersion: '3'
+
+plugins:
+  - serverless-plugin-typescript
+
+provider:
+  name: aws
+  httpApi:
+    cors:
+      allowedOrigins:
+        - http://localhost:3000
+    authorizers:
+      customJWTAuthorizer:
+        type: request
+        functionName: authorizerFunc
+  vpc:
+    securityGroupIds:
+      - sg-0b937898d9e34382e #rds
+      - sg-0dfbe1ee7b8def949 #s3
+    subnetIds:
+      - subnet-0f3f8949ce39b6df1 #rds
+  runtime: nodejs18.x
+  environment:
+    DB_DATABASE: ${param:database}
+    DB_USER: ${param:user}
+    DB_PORT: ${param:port}
+    DB_PASSWORD: ${param:password}
+    DB_HOST: ${param:host}
+    JWT_SECRET: ${param:JWT_SECRET}
+    ACCESS_KEY: ${param:ACCESS_KEY}
+    SECRET_ACCESS_KEY: ${param:SECRET_ACCESS_KEY}
+
+functions:
+  authorizerFunc:
+    handler: ./handlers/authorizer.handler
+  login:
+    handler: ./handlers/auth.login
+    events:
+      - httpApi:
+          path: /api/auth/login
+          method: post
+  logout:
+    handler: ./handlers/auth.logout
+    events:
+      - httpApi:
+          path: /api/auth/logout
+          method: get
+  getProfile:
+    handler: ./handlers/users.getProfile
+    events:
+      - httpApi:
+          path: /api/users/profile
+          method: get
+          authorizer:
+            name: customJWTAuthorizer
+  addRestaurant:
+    handler: ./handlers/restaurants.addRestaurant
+    events:
+      - httpApi:
+          path: /api/restaurants/add
+          method: post
+          authorizer:
+            name: customJWTAuthorizer
+  updateRestaurant:
+    handler: ./handlers/restaurants.updateRestaurant
+    events:
+      - httpApi:
+          path: /api/restaurants/update
+          method: put
+          authorizer:
+            name: customJWTAuthorizer
+  updateRestaurantLike:
+    handler: ./handlers/restaurants.updateRestaurantLike
+    events:
+      - httpApi:
+          path: /api/restaurants/likeRestaurant
+          method: put
+          authorizer:
+            name: customJWTAuthorizer
+  deleteRestaurant:
+    handler: ./handlers/restaurants.deleteRestaurant
+    events:
+      - httpApi:
+          path: /api/restaurants/{id}
+          method: delete
+          authorizer:
+            name: customJWTAuthorizer
+  getRestaurants:
+    handler: ./handlers/restaurants.getRestaurants
+    events:
+      - httpApi:
+          path: /api/restaurants/all
+          method: get
+          authorizer:
+            name: customJWTAuthorizer
+  updateDish:
+    handler: ./handlers/dishes.updateDish
+    events:
+      - httpApi:
+          path: /api/dishes/update
+          method: put
+          authorizer:
+            name: customJWTAuthorizer
+  deleteDish:
+    handler: ./handlers/dishes.deleteDish
+    events:
+      - httpApi:
+          path: /api/dishes/{id}
+          method: delete
+          authorizer:
+            name: customJWTAuthorizer
+  addOrder:
+    handler: ./handlers/orders.addOrder
+    events:
+      - httpApi:
+          path: /api/orders/add
+          method: post
+          authorizer:
+            name: customJWTAuthorizer
+  deleteOrder:
+    handler: ./handlers/orders.deleteOrder
+    events:
+      - httpApi:
+          path: /api/orders/{id}
+          method: delete
+          authorizer:
+            name: customJWTAuthorizer
