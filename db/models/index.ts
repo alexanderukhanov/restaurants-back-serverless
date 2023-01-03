@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { loadSequelize } from "../../db-connect";
+import { loadSequelize } from "../db-connect";
 
 let sequelize: Sequelize;
 

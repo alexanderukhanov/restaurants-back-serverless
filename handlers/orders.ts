@@ -1,5 +1,5 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { loadSequelize } from "../db-connect";
+import { loadSequelize } from "../db/db-connect";
 import { response } from "../helpers/response";
 import { createOrderValidation, deleteOrderValidation } from "../validations/orderValidation";
 

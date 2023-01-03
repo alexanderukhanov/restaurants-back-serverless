@@ -2,7 +2,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import * as bcrypt from 'bcrypt';
 import * as jsonwebtoken from "jsonwebtoken";
 
-import { loadSequelize } from "../db-connect";
+import { loadSequelize } from "../db/db-connect";
 import { createUserValidation } from "../validations/userValidation";
 import { response } from "../helpers/response";
 import { ADMIN_EMAIL, ADMIN_PASSWORD, TOKEN_MAX_AGE } from "../constants";

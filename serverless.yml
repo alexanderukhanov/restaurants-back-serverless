@@ -133,3 +133,12 @@ functions:
           method: delete
           authorizer:
             name: customJWTAuthorizer
+
+
+# full serverless typescript
+# serverless sequelize
+# manual mutation creation and apply to rds
+# jwt authentication like reusable middleware
+# rds connection
+# s3 connection
+# full request validation

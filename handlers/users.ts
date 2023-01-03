@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 
-import { loadSequelize } from "../db-connect";
+import { loadSequelize } from "../db/db-connect";
 import { response } from "../helpers/response";
 
 export const getProfile: APIGatewayProxyHandler = async (event, context) => {

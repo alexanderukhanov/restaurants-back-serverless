@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { QueryTypes } from "sequelize";
-import { loadSequelize } from "../db-connect";
+import { loadSequelize } from "../db/db-connect";
 import { response } from "../helpers/response";
 import {
     createRestaurantValidation,

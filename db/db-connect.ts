@@ -1,11 +1,11 @@
 import dbConfig from './db-config';
 import { Sequelize } from "sequelize";
-import { initUser } from "./db/models/user.model";
-import { initRestaurant } from "./db/models/restaurant.model";
-import { initDish } from "./db/models/dish.model";
-import { initOrder } from "./db/models/order.model";
-import { initUserLikes } from "./db/models/userLikes.model";
-import { initDishInOrder } from "./db/models/dishInOrder.model";
+import { initUser } from "./models/user.model";
+import { initRestaurant } from "./models/restaurant.model";
+import { initDish } from "./models/dish.model";
+import { initOrder } from "./models/order.model";
+import { initUserLikes } from "./models/userLikes.model";
+import { initDishInOrder } from "./models/dishInOrder.model";
 
 export const loadSequelize = async () => {
     const sequelize = new Sequelize({
