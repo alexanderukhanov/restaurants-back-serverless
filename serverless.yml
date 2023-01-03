@@ -16,6 +16,9 @@ provider:
       customJWTAuthorizer:
         type: request
         functionName: authorizerFunc
+      customOptionalJWTAuthorizer:
+        type: request
+        functionName: optionalAuthorizer
   vpc:
     securityGroupIds:
       - sg-0b937898d9e34382e #rds
@@ -36,6 +39,8 @@ provider:
 functions:
   authorizerFunc:
     handler: ./handlers/authorizer.handler
+  optionalAuthorizer:
+    handler: ./handlers/authorizer.optionalAuthorizer
   login:
     handler: ./handlers/auth.login
     events:
@@ -94,6 +99,8 @@ functions:
       - httpApi:
           path: /api/restaurants/all
           method: get
+          authorizer:
+            name: customOptionalJWTAuthorizer
   updateDish:
     handler: ./handlers/dishes.updateDish
     events:

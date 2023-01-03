@@ -11,9 +11,8 @@ export const login: APIGatewayProxyHandler = async (event, context) => {
     const {sequelizeDB, User} = await loadSequelize();
 
     try {
-        const body = typeof event.body === 'object' ? event.body : JSON.parse(event.body || 'null')  || {};
+        const body = JSON.parse(event.body || 'null')  || {};
         const { email, password } = body;
-        // console.log(event)
         const { error } = createUserValidation(body);
 
         if (error) {
