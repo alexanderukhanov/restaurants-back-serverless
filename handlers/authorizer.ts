@@ -4,8 +4,8 @@ import { ClientData } from "../types";
 
 export const handler: APIGatewayAuthorizerHandler = async (event, context) => {
     const cookies = event['cookies'] || [];
-    const [, jwtKey] = (cookies[0] || '').split('=');
-    const clientData = jsonwebtoken.decode(jwtKey) as ClientData | null;
+    const [, jwt] = (cookies[0] || '').split('=');
+    const clientData = jsonwebtoken.decode(jwt) as ClientData | null;
 
     if (!clientData) {
         return {
@@ -44,8 +44,8 @@ export const handler: APIGatewayAuthorizerHandler = async (event, context) => {
 
 export const optionalAuthorizer: APIGatewayAuthorizerHandler = async (event, context) => {
     const cookies = event['cookies'] || [];
-    const [, jwtKey] = (cookies[0] || '').split('=');
-    const clientData = jsonwebtoken.decode(jwtKey) as ClientData | null;
+    const [, jwt] = (cookies[0] || '').split('=');
+    const clientData = jsonwebtoken.decode(jwt) as ClientData | null;
 
     return {
         principalId: 'anonymous',
