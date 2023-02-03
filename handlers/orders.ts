@@ -7,7 +7,7 @@ export const addOrder: APIGatewayProxyHandler = async (event) => {
     const {sequelizeDB, Order, Dish, DishInOrder, Restaurant, User} = await loadSequelize();
 
     try {
-        const body = JSON.parse(event.body || 'null')  || {};
+        const body = JSON.parse(event.body || 'null') || {};
         const userId: number = event.requestContext.authorizer?.lambda.userId;
         const { restaurantId, dishes, totalCost } = body;
         const { error } = createOrderValidation(body);

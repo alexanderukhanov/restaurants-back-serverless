@@ -12,6 +12,7 @@ provider:
     cors:
       allowedOrigins:
         - http://localhost:3000
+      allowCredentials: true
     authorizers:
       customJWTAuthorizer:
         type: request
@@ -133,12 +134,124 @@ functions:
           method: delete
           authorizer:
             name: customJWTAuthorizer
+#DynamoDB
+  getRestaurantsWithPagination:
+    handler: ./handlers/dynamo.getRestaurantsWithPagination
+    events:
+      - httpApi:
+          path: /api/dynamo/restaurants/all
+          method: get
+  getRestaurantWithDishesDynamo:
+    handler: ./handlers/dynamo.getRestaurantWithDishesDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/restaurant
+          method: get
+  getDishesOfRestaurantDynamo:
+    handler: ./handlers/dynamo.getDishesOfRestaurantDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/dishes
+          method: get
+  getDishesByNameDynamo:
+    handler: ./handlers/dynamo.getDishesByNameDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/dishes-by-name
+          method: get
+  addDishesForRestaurantDynamo:
+    handler: ./handlers/dynamo.addDishesForRestaurantDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/dishes/add
+          method: post
+  addRestaurantDynamo:
+    handler: ./handlers/dynamo.addRestaurantDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/restaurant/add
+          method: post
+  updateRestaurantDynamo:
+    handler: ./handlers/dynamo.updateRestaurantDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/restaurant/update
+          method: put
+  deleteDishesByRestaurantDynamo:
+    handler: ./handlers/dynamo.deleteDishesByRestaurantDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/dishes/delete
+          method: delete
+  deleteRestaurantDynamo:
+    handler: ./handlers/dynamo.deleteRestaurantDynamo
+    events:
+      - httpApi:
+          path: /api/dynamo/restaurant/delete
+          method: delete
 
+resources:
+  Resources:
+    Restaurants:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: Restaurants
+        AttributeDefinitions:
+          - AttributeName: Id
+            AttributeType: S
+          - AttributeName: Type
+            AttributeType: S
+        KeySchema:
+          - AttributeName: Id
+            KeyType: HASH
+          - AttributeName: Type
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    Dishes:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Dishes
+        AttributeDefinitions:
+          - AttributeName: RestaurantId
+            AttributeType: S
+          - AttributeName: Id
+            AttributeType: S
+          - AttributeName: Name
+            AttributeType: S
+          - AttributeName: Cost
+            AttributeType: N
+        KeySchema:
+          - AttributeName: RestaurantId
+            KeyType: HASH
+          - AttributeName: Id
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: DishNameIndex
+            KeySchema:
+              - AttributeName: Name
+                KeyType: HASH
+              - AttributeName: Cost
+                KeyType: RANGE
+            Projection:
+              ProjectionType: 'KEYS_ONLY'
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
 # full serverless typescript
 # serverless sequelize
-# manual mutation creation and apply to rds
+# manual mutation creation and applying it to rds
 # jwt authentication like reusable middleware
-# rds connection
-# s3 connection
+# cookies setting and removing
 # full request validation
+# rds connection via vpc
+# s3 connection via vpc
+# serverless cors
+# add endpoint for DynamoDB in order to let lambda access from private subnet
+# CRUD operations DynamoDB + pagination + GSI using

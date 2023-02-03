@@ -9,6 +9,14 @@ const s3 = new AWS.S3({
     }
 });
 
+export const db = new AWS.DynamoDB.DocumentClient({
+    apiVersion: "2012-08-10",
+    credentials: {
+        accessKeyId: String(process.env.ACCESS_KEY),
+        secretAccessKey: String(process.env.SECRET_ACCESS_KEY),
+    }
+});
+
 export const saveFileFromBase64 = async (base64: string, entityName: string) => {
     try {
         const base64Image = base64.split(';base64,');

@@ -6,7 +6,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.26.0",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.109",
